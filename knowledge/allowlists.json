@@ -1,0 +1,87 @@
+{
+  "_meta": {
+    "generated_by": "scripts/build_kb.py",
+    "source": "runtime events (observable attributes only)",
+    "generated_at": "2026-10-26T00:00:00.000Z"
+  },
+  "internal_scanners": [
+    {
+      "src_ip": "101.112.60.91",
+      "tool": "enterprise vulnerability scanner",
+      "owner": "vuln-mgmt-team",
+      "service_account": "svc_07"
+    },
+    {
+      "src_ip": "103.242.178.72",
+      "tool": "enterprise vulnerability scanner",
+      "owner": "vuln-mgmt-team",
+      "service_account": "svc_04"
+    },
+    {
+      "src_ip": "106.239.145.152",
+      "tool": "enterprise vulnerability scanner",
+      "owner": "vuln-mgmt-team",
+      "service_account": "svc_14"
+    },
+    {
+      "src_ip": "3.82.248.23",
+      "tool": "enterprise vulnerability scanner",
+      "owner": "vuln-mgmt-team",
+      "service_account": "svc_02"
+    },
+    {
+      "src_ip": "71.65.83.25",
+      "tool": "enterprise vulnerability scanner",
+      "owner": "vuln-mgmt-team",
+      "service_account": "svc_16"
+    }
+  ],
+  "pentest_schedule": [
+    {
+      "ticket": "CHG-PT-1001",
+      "src_ip": "102.163.154.24",
+      "window_start": "2026-10-21T20:52:27.279Z",
+      "window_end": "2026-10-21T21:14:08.279Z",
+      "scope": "internal service network",
+      "approved_by": "security-governance"
+    },
+    {
+      "ticket": "CHG-PT-1002",
+      "src_ip": "164.220.249.146",
+      "window_start": "2026-10-21T20:54:19.280Z",
+      "window_end": "2026-10-21T21:16:14.280Z",
+      "scope": "internal service network",
+      "approved_by": "security-governance"
+    },
+    {
+      "ticket": "CHG-PT-1003",
+      "src_ip": "217.106.166.138",
+      "window_start": "2026-10-21T20:15:15.281Z",
+      "window_end": "2026-10-21T20:36:59.281Z",
+      "scope": "internal service network",
+      "approved_by": "security-governance"
+    },
+    {
+      "ticket": "CHG-PT-1004",
+      "src_ip": "55.133.140.145",
+      "window_start": "2026-10-21T20:36:19.278Z",
+      "window_end": "2026-10-21T20:58:02.278Z",
+      "scope": "internal service network",
+      "approved_by": "security-governance"
+    },
+    {
+      "ticket": "CHG-PT-1005",
+      "src_ip": "83.238.213.151",
+      "window_start": "2026-10-21T20:45:24.280Z",
+      "window_end": "2026-10-21T21:06:56.280Z",
+      "scope": "internal service network",
+      "approved_by": "security-governance"
+    }
+  ],
+  "internal_sites": [
+    {
+      "host": "docs.internal",
+      "role": "documentation wiki"
+    }
+  ]
+}

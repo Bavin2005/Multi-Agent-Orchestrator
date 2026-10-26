@@ -1,0 +1,106 @@
+# Multi-Agent SIEM Orchestrator - single parameter file (starting values, tuned against the grader).
+paths:
+  data_dir: data
+  knowledge_dir: knowledge
+  state_dir: state
+  runs_dir: runs
+
+data_files:
+  events: SIEM_Events_For_Runtime.csv
+  alerts: SIEM_Alerts.csv
+
+# Opened ONLY by soc/grader.py. The pipeline never reads these.
+grader_only:
+  alert_ground_truth: Alert_Ground_Truth_Map.csv
+  incident_ground_truth: Ground_Truth_Updated.csv
+
+# The alert CSV carries text severities; the orchestrator works on numbers (>= 8 dispatches).
+severity_map: {LOW: 3, MEDIUM: 6, HIGH: 10, CRITICAL: 13}
+
+replay:
+  speed: 0              # 0 = as fast as possible; 60 = 60x real time
+  shuffle_within_s: 0   # >0 delays some alerts by up to N seconds (out-of-order test)
+  seed: 7
+
+classifier:
+  confidence_threshold: 0.7
+
+grouping:
+  key: src_ip                       # fallback chain when missing: user, then host
+  fallback: [user, host]
+  window_minutes: {network: 30, app_endpoint: 10}
+
+# Dispatch never waits for a "complete" log set (event-time seconds):
+#   trigger fired -> send after debounce_s of quiet; no trigger -> send after idle_s of quiet;
+#   max_wait_s caps total holding even if alerts keep arriving.
+# Anything arriving after dispatch becomes version N+1 (a revision).
+dispatch:
+  severity_threshold: 8
+  debounce_s: 60
+  idle_s: 120
+  max_wait_s: 300
+  sweep_interval_s: 15
+  end_signal_actions: [PROCESS_EXECUTION, FILE_DOWNLOAD]
+  log_lookback_min: 30
+
+# Owner selection: furthest attack stage wins. AUTH is network-domain in this build.
+owner_rank:
+  ENDPOINT: 3
+  HTTP: 2
+  AUTH: 1
+  NETWORK: 1
+  FIREWALL: 1
+owner_domain: {3: app_endpoint, 2: app_endpoint, 1: network}
+domain_agent: {network: network_agent, app_endpoint: app_endpoint_agent}
+
+ti:
+  cache_hours: 24
+
+agent:
+  tool_budget_calls: 5
+  tool_budget_seconds: 60
+  citation_retries: 2
+  fp_min_pass: 2
+  compress_repeats_over: 6
+
+memory:
+  similarity_threshold: 0.85
+
+risk:
+  # base(attack_type): calibrated so every class lands in its expected band (see README, "Risk calibration").
+  base:
+    PORT_SCAN: 4
+    BRUTE_FORCE: 5
+    SQL_INJECTION: 7
+    XSS: 5
+    FIREWALL_POLICY_VIOLATION: 7
+    SUSPICIOUS_ENDPOINT_EXECUTION: 5
+    MALICIOUS_IP_DOMAIN: 6
+    MALWARE_DOWNLOAD_EXECUTION: 6
+    MULTI_STAGE_ATTACK: 8
+    UNMAPPED_SUSPICIOUS_ACTIVITY: 4
+  success_bonus: 3
+  ti_score: {known_malicious: 2, suspicious: 1, unknown: 0, benign_allowlisted: 0}
+  fp_evidence_per_check: 4
+  levels: {CRITICAL: 11, HIGH: 8, MEDIUM: 4}   # >= threshold; below MEDIUM = LOW
+  cap_low_when_false_positive: true
+
+llm:
+  provider: auto            # auto = env LLM_PROVIDER, else mock when no key is present
+  providers:
+    openrouter:
+      base_url: https://openrouter.ai/api/v1
+      key_env: OPENROUTER_API_KEY
+      recon_model: anthropic/claude-sonnet-5.5     # confirm exact id in your OpenRouter console
+      classifier_model: qwen/qwen3-8b
+    nvidia:
+      base_url: https://integrate.api.nvidia.com/v1
+      key_env: NVIDIA_API_KEY
+      recon_model: openai/gpt-oss-120b             # confirm exact id in build.nvidia.com
+      classifier_model: openai/gpt-oss-20b
+  timeout_s: 60
+  max_tokens: 1800
+  temperature: 0.0
+
+evaluation:
+  manual_minutes_per_incident: 20

@@ -1,0 +1,384 @@
+# Stage 9 playbooks: WHAT an attack is (separate from routing.yaml, which decides WHO gets it).
+#
+# Matching: all non-optional stages must have >= min events. Highest priority matching playbook wins.
+# Verdict: n = number of passing FP checks.  n >= agent.fp_min_pass (or one DECISIVE check: pentest schedule /
+#          scanner allowlist) and no `confirm` hit -> FALSE_POSITIVE;  n == 0 -> TRUE_POSITIVE;
+#          anything between (or a confirm hit + benign evidence) -> LLM judge.
+# Templates use {vars}: src_ip user host service, <stage>_n/_t0/_t1/_ports/_urls/_domains/_payloads/_cmds/_files.
+
+fp_labels:
+  FP_AUTHORIZED_PORT_SCANNER:
+    title: "Authorised internal vulnerability scan (benign)"
+    stage: network_discovery
+    benign_hypothesis: "An approved internal vulnerability scanner sweeping the service network."
+    stage_desc: "{src_ip} is an allow-listed internal scanner; {n} probes across {ports_n} ports are scheduled assessment traffic."
+    summary: "{src_ip} ({user}) is an allow-listed internal vulnerability scanner; its {ports_n}-port sweep is scheduled assessment traffic, not an attack."
+    actions:
+      - "Close as a false positive after analyst approval."
+      - "Keep {src_ip} on the scanner allowlist with a named owner and a review date."
+  FP_AUTHORIZED_PENTEST:
+    title: "Authorised penetration test (benign)"
+    stage: unclassified_suspicious_activity
+    benign_hypothesis: "An authorised penetration test running against the internal service network."
+    stage_desc: "{src_ip} probed the internal service network inside an approved pentest window ({ticket}); blocks are the firewall enforcing scope."
+    summary: "{src_ip} ({user}) is the source of an approved penetration test ({ticket}); the scan and restricted-port blocks fall inside its scheduled window, so this is expected testing, not an intrusion."
+    actions:
+      - "Close as a false positive after analyst approval, referencing {ticket}."
+      - "Confirm the pentest team's report covers the blocked ports; any activity AFTER {window_end} UTC from {src_ip} would be out of scope."
+  FP_PASSWORD_MISTYPING:
+    title: "Service-account password mistype (benign)"
+    stage: authentication_anomaly
+    benign_hypothesis: "A service account owner mistyped a password before logging in successfully."
+    stage_desc: "{n} failed logins for service account '{user}' from its known internal address {src_ip}, then a successful login."
+    summary: "{src_ip} is a known source for service account '{user}'; the {n} failed logins followed by a success are consistent with a mistyped password, not a brute-force attack."
+    actions:
+      - "Close as a false positive after analyst approval."
+      - "Ask the account owner to confirm the login; rotate the secret only if they cannot."
+  FP_DOCUMENTATION_SEARCH:
+    title: "Documentation-site keyword search (benign)"
+    stage: web_request_review
+    benign_hypothesis: "An employee searching the internal documentation wiki for the word 'select'."
+    stage_desc: "{n} GET requests to the internal docs wiki search ({domains}) returned HTTP 200 with a normal-sized page; the keyword has no SQL syntax around it."
+    summary: "{src_ip} searched the internal documentation wiki for a SQL keyword; the requests are ordinary GETs with normal responses, not SQL injection."
+    actions:
+      - "Close as a false positive after analyst approval."
+      - "Tune rule WEB-SQL-01 to ignore the docs.internal search endpoint (keyword-only queries)."
+  FP_ADMIN_POWERSHELL:
+    title: "Administrative read-only PowerShell (benign)"
+    stage: administrative_script_execution
+    benign_hypothesis: "A service account running read-only system-inventory PowerShell commands."
+    stage_desc: "Service account '{user}' ran {n} read-only inventory cmdlet(s) ({cmds}); no encoded commands, script hosts or dropped files."
+    summary: "'{user}' ran read-only inventory PowerShell ({cmds}) on {host}; there is no obfuscation, script-host chain or dropped binary, so this is administration, not an attack."
+    actions:
+      - "Close as a false positive after analyst approval."
+      - "Tune rule ENDPOINT-PS-01 for read-only Get-* cmdlets run by inventoried service accounts."
+
+playbooks:
+  # ------------------------------------------------------------------------------------------------
+  multi_stage:
+    agent: app_endpoint
+    attack_type: MULTI_STAGE_ATTACK
+    priority: 100
+    title: "Multi-stage intrusion (credential attack -> executable download -> execution)"
+    stages:
+      - name: credential_attack
+        select: {source_type: [AUTH], action: [LOGIN_FAILED]}
+        same: [src_ip, user]
+        min: 3
+        mitre: [T1110.001]
+        supporting: {select: {source_type: [AUTH], action: [LOGIN_SUCCESS]}, after: credential_attack, first_only: true}
+        desc: "{n} failed {service} logins as '{user}' from {src_ip}, {t0}-{t1} UTC{support_clause}."
+        support_text: "; the next event is a SUCCESSFUL login at {support_t0} UTC"
+      - name: suspicious_download
+        select: {predicate: exec_download}
+        after: credential_attack
+        min: 1
+        mitre: [T1105]
+        desc: "{src_ip} downloaded an executable ({urls}) with HTTP 200 ({content_types}, {sizes} bytes) at {t0} UTC."
+      - name: endpoint_execution
+        select: {source_type: [ENDPOINT], action: [PROCESS_EXECUTION]}
+        after: suspicious_download
+        min: 1
+        mitre: [T1204.002, T1059.003]
+        desc: "{cmds} executed on {host} at {t0} UTC (parent {parents}, path {files}, hash {hashes})."
+    consult: {domain: network, stage: credential_attack}
+    confirm: []
+    fp_checks:
+      - {check: in_pentest_schedule, label: FP_AUTHORIZED_PENTEST}
+    summary: "{src_ip} brute-forced '{user}' ({credential_attack_n} failed logins{success_short}), downloaded {suspicious_download_urls} and executed it on {host}; the full chain from access to code execution is evidenced."
+    impact:
+      - "Code execution on {host} as '{user}': {endpoint_execution_cmds} ran at {endpoint_execution_t0} UTC."
+      - when: name_match
+        text: "The executed file has the same name as the downloaded file ({url_file}), tying the execution to the download."
+      - "The attacker held valid access before executing the payload; treat the host and the account as fully compromised."
+    gaps:
+      - "The payload's behaviour after execution (persistence, lateral movement, C2) is not visible in these logs."
+      - "The downloaded file's content is unavailable; the hash has no match in the local malware feed."
+    actions:
+      - "Isolate {host} from the network now and preserve memory and disk for forensics."
+      - "Disable '{user}', invalidate sessions and force a credential reset with MFA."
+      - "Block {src_ip} at the perimeter and search all hosts for the file hash {endpoint_execution_hashes}."
+      - "Hunt for {endpoint_execution_files} and its parent process on other hosts; review {host} for persistence."
+      - "Close the exposed authentication path (lockout, rate-limit, MFA) that allowed the initial access."
+
+  # ------------------------------------------------------------------------------------------------
+  malware_download_execution:
+    agent: app_endpoint
+    attack_type: MALWARE_DOWNLOAD_EXECUTION
+    priority: 80
+    title: "Malware download and execution"
+    stages:
+      - name: malware_download
+        select: {predicate: exec_download}
+        min: 1
+        mitre: [T1105]
+        supporting: {select: {source_type: [ENDPOINT], action: [FILE_CREATED]}, after: malware_download, first_only: false}
+        desc: "{src_ip} downloaded {urls} (HTTP 200, {sizes} bytes) at {t0} UTC{support_clause}."
+        support_text: "; the file was written to disk at {support_t0} UTC ({support_files})"
+      - name: endpoint_execution
+        select: {source_type: [ENDPOINT], action: [PROCESS_EXECUTION]}
+        after: malware_download
+        min: 1
+        mitre: [T1204.002]
+        desc: "{cmds} executed on {host} at {t0} UTC (parent {parents}, hash {hashes})."
+    confirm: []
+    fp_checks:
+      - {check: in_pentest_schedule, label: FP_AUTHORIZED_PENTEST}
+    summary: "{src_ip} downloaded {malware_download_urls} from a known-malicious source and it was executed on {host} within seconds."
+    impact:
+      - "Malware-delivery chain on {host}: download ({malware_download_t0} UTC) -> file written to disk ({malware_download_support_t0} UTC) -> execution of {endpoint_execution_cmds} ({endpoint_execution_t0} UTC)."
+      - when: hash_match
+        text: "The executed file's hash ({endpoint_execution_hashes}) equals the hash of the file the browser wrote to disk, so the dropped file is what ran."
+      - "The delivery host is on the SOC watchlist, so the payload should be assumed hostile."
+    gaps:
+      - when: name_mismatch
+        text: "The URL names '{url_file}' but the file written to disk is '{drop_file}': the download is tied to the drop by timing, user and parent process (the browser), not by content."
+      - "Post-execution behaviour (persistence, network beaconing, lateral movement) is not visible in these logs."
+      - "The binary itself is unavailable; the hash is not in the local malware feed, so the family is unconfirmed."
+    actions:
+      - "Isolate {host} and collect the dropped file for sandbox analysis."
+      - "Block the download source and {src_ip}'s outbound access to {malware_download_domains}."
+      - "Hunt for hash {endpoint_execution_hashes} and {endpoint_execution_cmds} across the estate."
+      - "Reset credentials used on {host} and review for persistence (Run keys, scheduled tasks)."
+
+  # ------------------------------------------------------------------------------------------------
+  port_scan:
+    agent: network
+    attack_type: PORT_SCAN
+    priority: 70
+    title: "Port scan / service discovery"
+    stages:
+      - name: reconnaissance
+        select: {predicate: scan_probe}
+        distinct_ports: {mode: before, n: 10}
+        min: 1
+        mitre: [T1595.001]
+        desc: "{n} opening SYN probes from {src_ip} to ports {ports} between {t0} and {t1} UTC."
+      - name: port_discovery
+        select: {predicate: scan_probe}
+        distinct_ports: {mode: from, n: 10}
+        min: 1
+        mitre: [T1046]
+        desc: "The sweep crossed 10 distinct ports at {t0} UTC (port {ports}); {src_ip} has enumerated the exposed services."
+    confirm: []
+    min_distinct_ports: 10
+    fp_checks:
+      - {check: in_pentest_schedule, label: FP_AUTHORIZED_PENTEST}
+      - {check: src_ip_in_scanner_allowlist, label: FP_AUTHORIZED_PORT_SCANNER}
+      - {check: internal_to_internal_scan, label: FP_AUTHORIZED_PORT_SCANNER}
+    summary: "{src_ip} swept {n_ports} distinct ports on {host} ({all_ports}) in {duration}; the source is not allow-listed or scheduled."
+    impact:
+      - "{src_ip} learned which of {n_ports} ports answer on {host}; every probe in these logs failed to establish a session."
+      - "Port context (not evidence of compromise): {port_notes}"
+    gaps:
+      - "No exploitation, login or data transfer from {src_ip} is visible after the sweep."
+      - "Scans may continue from other source addresses; only {src_ip} is covered here."
+    actions:
+      - "Block {src_ip} at the perimeter and add it to the watchlist."
+      - "Confirm that only intended services are reachable on {host} (reduce exposure of {risky_ports})."
+      - "Review inbound logs for {src_ip} in the following 24 h for exploitation attempts against discovered services."
+
+  # ------------------------------------------------------------------------------------------------
+  sql_injection:
+    agent: app_endpoint
+    attack_type: SQL_INJECTION
+    priority: 60
+    title: "SQL injection against a web endpoint"
+    stages:
+      - name: web_input_injection
+        select: {predicate: sql_like}
+        min: 1
+        mitre: [T1190]
+        desc: "{n} HTTP {methods} request(s) to {urls} from {src_ip}, {t0}-{t1} UTC, carrying SQL syntax: {payloads}. Responses: HTTP {statuses}."
+    confirm: [sqli_strict]
+    fp_checks:
+      - {check: internal_docs_site, label: FP_DOCUMENTATION_SEARCH}
+      - {check: benign_query_response, label: FP_DOCUMENTATION_SEARCH}
+      - {check: no_sql_syntax, label: FP_DOCUMENTATION_SEARCH}
+      - {check: in_pentest_schedule, label: FP_AUTHORIZED_PENTEST}
+    summary: "{src_ip} sent {web_input_injection_n} SQL-injection payloads to {web_input_injection_urls} on {host} ({web_input_injection_payloads}); the server answered HTTP {web_input_injection_statuses}."
+    impact:
+      - when: injection_succeeded
+        text: "Responses were HTTP 200 to injection payloads: the injected SQL may have executed and returned data."
+      - when: "!injection_succeeded"
+        text: "The server answered with HTTP {web_input_injection_statuses} (errors) for every payload; this shows the input reached the SQL layer and was not rejected by a WAF, but no data return is evidenced."
+    gaps:
+      - "Database logs are not available, so whether any payload altered or exposed data cannot be confirmed."
+      - "Only requests from {src_ip} are covered; a successful variant from another address would not appear here."
+    actions:
+      - "Block {src_ip} at the WAF/perimeter."
+      - "Review {web_input_injection_urls} for string-concatenated SQL; move to parameterised queries."
+      - "Check database audit logs on {host} for the timeframe {t0}-{t1} UTC for unexpected reads/writes."
+      - "Add WAF rules for tautologies (OR 1=1), UNION SELECT and comment terminators."
+
+  # ------------------------------------------------------------------------------------------------
+  xss:
+    agent: app_endpoint
+    attack_type: XSS
+    priority: 55
+    title: "Cross-site scripting attempt"
+    stages:
+      - name: script_injection_attempt
+        select: {predicate: xss}
+        min: 1
+        mitre: [T1059.007]
+        desc: "{n} request(s) to {urls} from {src_ip}, {t0}-{t1} UTC, carrying script markup ({payloads}); HTTP {statuses}."
+    confirm: [xss]
+    fp_checks:
+      - {check: in_pentest_schedule, label: FP_AUTHORIZED_PENTEST}
+    summary: "{src_ip} injected script markup into {script_injection_attempt_urls} on {host} ({script_injection_attempt_n} payload variants) and the application answered HTTP {script_injection_attempt_statuses}."
+    impact:
+      - when: injection_succeeded
+        text: "HTTP 200 to every payload means the markup was accepted; if it is reflected unencoded, script runs in a victim's browser (session theft, forced actions)."
+      - when: "!injection_succeeded"
+        text: "Payloads were rejected or errored; no reflection is evidenced."
+    gaps:
+      - "Response bodies are not logged, so whether the payload was actually reflected unencoded is unconfirmed."
+      - "No victim browser activity (cookie exfiltration, forged requests) is visible."
+    actions:
+      - "Block {src_ip} and review {script_injection_attempt_urls} for unencoded output of the 'q' parameter."
+      - "Enforce context-aware output encoding and a strict Content-Security-Policy."
+      - "Check web logs for the same payloads from other addresses."
+
+  # ------------------------------------------------------------------------------------------------
+  brute_force:
+    agent: network
+    attack_type: BRUTE_FORCE
+    priority: 50
+    title: "Credential brute force"
+    stages:
+      - name: reconnaissance
+        select: {predicate: recon_probe}
+        before: credential_attack
+        optional: true
+        min: 1
+        mitre: [T1595]
+        desc: "{n} scan/block events from {src_ip} before the login attempts."
+      - name: credential_attack
+        select: {source_type: [AUTH], action: [LOGIN_FAILED]}
+        same: [src_ip, user]
+        min: 3
+        mitre: [T1110.001]
+        desc: "{n} failed {service} logins as '{user}' from {src_ip} on {host}, {t0}-{t1} UTC (about one every {gap}s)."
+      - name: account_compromise
+        select: {source_type: [AUTH], action: [LOGIN_SUCCESS]}
+        after: credential_attack
+        first_only: true
+        optional: true
+        min: 1
+        mitre: [T1078]
+        desc: "Successful {service} login as '{user}' from {src_ip} at {t0} UTC, {lag}s after the last failure."
+    confirm: []
+    fp_checks:
+      - {check: known_service_account_ip, label: FP_PASSWORD_MISTYPING}
+      - {check: internal_source_zone, label: FP_PASSWORD_MISTYPING}
+      - {check: service_account, label: FP_PASSWORD_MISTYPING}
+      - {check: in_pentest_schedule, label: FP_AUTHORIZED_PENTEST}
+    summary: "{src_ip} made {credential_attack_n} failed {service} logins as '{user}' on {host}{success_short}."
+    impact:
+      - when: account_compromise
+        text: "'{user}' was successfully accessed from {src_ip} at {account_compromise_t0} UTC; the attacker has a valid session on {host}."
+      - when: "!account_compromise"
+        text: "No successful login is visible; the account does not appear compromised yet."
+      - when: post_login_activity
+        text: "After the login, {src_ip} produced {post_login_n} further event(s) on {host} ({post_login_summary})."
+    gaps:
+      - when: account_compromise
+        text: "What the attacker did after logging in is not visible beyond connection records; commands and file access are unlogged here."
+      - when: "!account_compromise"
+        text: "Attempts may continue; the logs end before a success or lockout is seen."
+      - "The source address's reputation is unknown in the local feeds; it may be one node of a distributed attack."
+    actions:
+      - when: account_compromise
+        text: "Disable '{user}' and invalidate all sessions/keys on {host}; force a credential reset with MFA."
+      - when: account_compromise
+        text: "Review {host} for activity after {account_compromise_t0} UTC (new accounts, persistence, outbound connections)."
+      - "Block {src_ip} at the perimeter."
+      - "Enable account lockout and rate limiting for {service} on {host}; prefer key-based auth/MFA."
+
+  # ------------------------------------------------------------------------------------------------
+  firewall_policy_violation:
+    agent: network
+    attack_type: FIREWALL_POLICY_VIOLATION
+    priority: 45
+    title: "Repeated access attempts to restricted services"
+    stages:
+      - name: restricted_service_access_attempt
+        select: {predicate: restricted_block}
+        min: 3
+        mitre: [T1046, T1021]
+        desc: "{n} connection attempts from {src_ip} to restricted ports {ports} were blocked by the firewall, {t0}-{t1} UTC."
+    confirm: []
+    fp_checks:
+      - {check: in_pentest_schedule, label: FP_AUTHORIZED_PENTEST}
+      - {check: src_ip_in_scanner_allowlist, label: FP_AUTHORIZED_PORT_SCANNER}
+    summary: "{src_ip} tried {restricted_service_access_attempt_n} restricted services ({restricted_service_access_attempt_ports}) on {host}; the firewall blocked every attempt."
+    impact:
+      - "The firewall policy held: every attempt was blocked, so no session to these services was established."
+      - "Port context (not evidence of compromise): {port_notes}"
+    gaps:
+      - "Only blocked traffic is evidenced; any permitted traffic from {src_ip} to other ports is not part of this incident."
+      - "A rule change or misconfiguration could expose these ports later; the block is the only barrier visible here."
+    actions:
+      - "Keep the block and add {src_ip} to the perimeter deny list."
+      - "Verify {risky_ports} are not exposed on any other perimeter rule or cloud security group."
+      - "Check threat feeds and other logs for {src_ip} probing different targets."
+
+  # ------------------------------------------------------------------------------------------------
+  suspicious_endpoint_execution:
+    agent: app_endpoint
+    attack_type: SUSPICIOUS_ENDPOINT_EXECUTION
+    priority: 40
+    title: "Suspicious script / shell execution on an endpoint"
+    stages:
+      - name: suspicious_process_execution
+        select: {predicate: endpoint_script}
+        min: 1
+        mitre: [T1059.001, T1059.003, T1059.005, T1027]
+        desc: "{n} process execution(s) on {host} as '{user}', {t0}-{t1} UTC: {cmds}."
+    confirm: [suspicious_command]
+    fp_checks:
+      - {check: read_only_admin_commands, label: FP_ADMIN_POWERSHELL}
+      - {check: service_account, label: FP_ADMIN_POWERSHELL}
+      - {check: no_malicious_artifacts, label: FP_ADMIN_POWERSHELL}
+      - {check: in_pentest_schedule, label: FP_AUTHORIZED_PENTEST}
+    summary: "'{user}' ran {suspicious_process_execution_n} suspicious commands on {host} ({suspicious_process_execution_cmds})."
+    impact:
+      - "Code ran on {host}: {suspicious_process_execution_cmds}; the pattern (encoded PowerShell, batch and script-host execution launched from explorer.exe) matches common malware loaders."
+      - "The commands were run from an interactive parent (explorer.exe), consistent with a user opening a malicious attachment."
+    gaps:
+      - "What the decoded PowerShell and the batch/VBS scripts actually did is not visible in these logs."
+      - "No network download or file-write event is logged for this host, so the delivery vector is unknown."
+    actions:
+      - "Isolate {host} and capture memory; decode the PowerShell and recover update.vbs / suspicious_script.bat."
+      - "Disable or reset '{user}' and review its recent sign-ins."
+      - "Hunt for the same command lines and script names across the estate."
+      - "Restrict script hosts (wscript/cscript) and constrain PowerShell (AMSI, Constrained Language Mode, script-block logging)."
+
+  # ------------------------------------------------------------------------------------------------
+  malicious_indicator_contact:
+    agent: app_endpoint
+    attack_type: MALICIOUS_IP_DOMAIN
+    priority: 30
+    title: "Contact with known-malicious infrastructure"
+    stages:
+      - name: malicious_indicator_contact
+        select: {predicate: ioc_contact}
+        min: 1
+        mitre: [T1071.001, T1105]
+        desc: "{n} HTTP request(s) from {src_ip} to known-malicious domain(s) {domains} ({urls}), {t0}-{t1} UTC; server replied HTTP {statuses} with {content_types}."
+    confirm: []
+    fp_checks:
+      - {check: in_pentest_schedule, label: FP_AUTHORIZED_PENTEST}
+    summary: "{src_ip} ({host}) contacted {n_domains} known-malicious domain(s) ({malicious_indicator_contact_domains}) and received HTTP 200 binary responses."
+    impact:
+      - "The host reached attacker-controlled infrastructure and received {malicious_indicator_contact_sizes} bytes of opaque binary data; this is consistent with a beacon or payload fetch."
+      - "No execution of the downloaded content is evidenced in these logs, so compromise is suspected, not proven."
+    gaps:
+      - "No process, file-creation or follow-on network event ties the response to execution on {host}."
+      - "The content of the responses is not captured."
+    actions:
+      - "Block {malicious_indicator_contact_domains} at DNS/proxy/firewall."
+      - "Identify the process on {host} that made the requests (EDR/proxy logs) and scan the host for dropped binaries."
+      - "Search for other hosts that resolved or contacted the same domains."
+      - "Isolate {host} if a process or file is found."

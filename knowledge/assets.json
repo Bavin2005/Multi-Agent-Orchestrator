@@ -1,0 +1,256 @@
+{
+  "_meta": {
+    "generated_by": "scripts/build_kb.py",
+    "tiers": "HOST-001..008 production(2), 009..024 internal(1), 025+ test(0)"
+  },
+  "hosts": {
+    "HOST-008": {
+      "criticality": 2,
+      "tier": "production",
+      "admin_host": false
+    },
+    "HOST-018": {
+      "criticality": 1,
+      "tier": "internal",
+      "admin_host": false
+    },
+    "HOST-005": {
+      "criticality": 2,
+      "tier": "production",
+      "admin_host": false
+    },
+    "HOST-002": {
+      "criticality": 2,
+      "tier": "production",
+      "admin_host": false
+    },
+    "HOST-013": {
+      "criticality": 1,
+      "tier": "internal",
+      "admin_host": false
+    },
+    "HOST-003": {
+      "criticality": 2,
+      "tier": "production",
+      "admin_host": false
+    },
+    "HOST-019": {
+      "criticality": 1,
+      "tier": "internal",
+      "admin_host": false
+    },
+    "HOST-007": {
+      "criticality": 2,
+      "tier": "production",
+      "admin_host": false
+    },
+    "HOST-012": {
+      "criticality": 1,
+      "tier": "internal",
+      "admin_host": false
+    },
+    "HOST-001": {
+      "criticality": 2,
+      "tier": "production",
+      "admin_host": false
+    },
+    "HOST-010": {
+      "criticality": 1,
+      "tier": "internal",
+      "admin_host": false
+    },
+    "HOST-021": {
+      "criticality": 1,
+      "tier": "internal",
+      "admin_host": false
+    },
+    "HOST-029": {
+      "criticality": 0,
+      "tier": "test",
+      "admin_host": false
+    },
+    "HOST-006": {
+      "criticality": 2,
+      "tier": "production",
+      "admin_host": false
+    },
+    "HOST-020": {
+      "criticality": 1,
+      "tier": "internal",
+      "admin_host": false
+    },
+    "HOST-009": {
+      "criticality": 1,
+      "tier": "internal",
+      "admin_host": false
+    },
+    "HOST-015": {
+      "criticality": 1,
+      "tier": "internal",
+      "admin_host": false
+    },
+    "HOST-011": {
+      "criticality": 1,
+      "tier": "internal",
+      "admin_host": false
+    },
+    "HOST-014": {
+      "criticality": 1,
+      "tier": "internal",
+      "admin_host": false
+    },
+    "HOST-016": {
+      "criticality": 1,
+      "tier": "internal",
+      "admin_host": false
+    },
+    "HOST-004": {
+      "criticality": 2,
+      "tier": "production",
+      "admin_host": false
+    },
+    "HOST-026": {
+      "criticality": 0,
+      "tier": "test",
+      "admin_host": false
+    },
+    "HOST-017": {
+      "criticality": 1,
+      "tier": "internal",
+      "admin_host": false
+    },
+    "HOST-033": {
+      "criticality": 0,
+      "tier": "test",
+      "admin_host": false
+    },
+    "HOST-024": {
+      "criticality": 1,
+      "tier": "internal",
+      "admin_host": false
+    },
+    "HOST-038": {
+      "criticality": 0,
+      "tier": "test",
+      "admin_host": false
+    },
+    "HOST-031": {
+      "criticality": 0,
+      "tier": "test",
+      "admin_host": false
+    },
+    "HOST-036": {
+      "criticality": 0,
+      "tier": "test",
+      "admin_host": false
+    }
+  },
+  "users": {
+    "svc_02": {
+      "type": "service_account",
+      "owner_team": "platform-ops",
+      "known_ips": [
+        "102.163.154.24",
+        "187.122.117.235",
+        "189.179.186.241",
+        "3.82.248.23"
+      ]
+    },
+    "svc_04": {
+      "type": "service_account",
+      "owner_team": "platform-ops",
+      "known_ips": [
+        "103.242.178.72",
+        "117.101.201.113",
+        "138.48.122.196"
+      ]
+    },
+    "svc_05": {
+      "type": "service_account",
+      "owner_team": "platform-ops",
+      "known_ips": [
+        "164.220.249.146"
+      ]
+    },
+    "svc_06": {
+      "type": "service_account",
+      "owner_team": "platform-ops",
+      "known_ips": [
+        "86.59.106.22"
+      ]
+    },
+    "svc_07": {
+      "type": "service_account",
+      "owner_team": "platform-ops",
+      "known_ips": [
+        "101.112.60.91",
+        "174.172.225.203",
+        "83.238.213.151"
+      ]
+    },
+    "svc_09": {
+      "type": "service_account",
+      "owner_team": "platform-ops",
+      "known_ips": [
+        "172.215.145.102",
+        "211.238.8.91",
+        "83.143.2.250"
+      ]
+    },
+    "svc_10": {
+      "type": "service_account",
+      "owner_team": "platform-ops",
+      "known_ips": [
+        "217.106.166.138"
+      ]
+    },
+    "svc_11": {
+      "type": "service_account",
+      "owner_team": "platform-ops",
+      "known_ips": [
+        "69.224.219.150"
+      ]
+    },
+    "svc_12": {
+      "type": "service_account",
+      "owner_team": "platform-ops",
+      "known_ips": [
+        "212.242.30.131",
+        "43.195.230.245"
+      ]
+    },
+    "svc_13": {
+      "type": "service_account",
+      "owner_team": "platform-ops",
+      "known_ips": [
+        "120.195.241.172",
+        "140.211.84.194",
+        "146.51.20.152"
+      ]
+    },
+    "svc_14": {
+      "type": "service_account",
+      "owner_team": "platform-ops",
+      "known_ips": [
+        "106.239.145.152",
+        "184.74.243.89",
+        "98.189.168.5"
+      ]
+    },
+    "svc_16": {
+      "type": "service_account",
+      "owner_team": "platform-ops",
+      "known_ips": [
+        "63.35.175.88",
+        "71.65.83.25"
+      ]
+    },
+    "svc_17": {
+      "type": "service_account",
+      "owner_team": "platform-ops",
+      "known_ips": [
+        "55.133.140.145"
+      ]
+    }
+  }
+}

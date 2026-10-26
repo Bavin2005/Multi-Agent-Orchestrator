@@ -1,0 +1,24 @@
+# Stage 4 routing patterns: which DOMAIN an alert belongs to (not what attack it is).
+# AUTH is network-domain in this build (brute force goes to the Network Security agent).
+# Group names are the ones the SIEM actually emits in SIEM_Alerts.csv.
+routing_patterns:
+  network:
+    source_types: [NETWORK, FIREWALL, AUTH]
+    siem_groups: [network, firewall, port_scan, policy_violation, generic_anomaly,
+                  authentication, brute_force, authentication_failures, authentication_success,
+                  recon, scan, dos, c2]
+  app_endpoint:
+    source_types: [HTTP, ENDPOINT]
+    siem_groups: [web, indicator, possible_sql_injection, possible_xss, sqli, xss,
+                  endpoint, powershell, script_execution, execution, malware, process]
+
+# Allowed actions per source_type (Stage 3 validation).
+allowed_actions:
+  NETWORK: [CONNECT, CONNECTION_FAILED, SCAN, DNS_REQUEST]
+  FIREWALL: [ALLOW, BLOCK, DROP, SCAN_DETECTED]
+  AUTH: [LOGIN_FAILED, LOGIN_SUCCESS, LOGOUT]
+  HTTP: [HTTP_REQUEST, FILE_DOWNLOAD, FILE_UPLOAD]
+  ENDPOINT: [PROCESS_EXECUTION, FILE_CREATED, REGISTRY_CHANGE]
+
+required_core_fields: [alert_id, alert_time, siem_rule_id, siem_groups, siem_severity, event]
+required_event_fields: [event_id, timestamp, source_type, action]

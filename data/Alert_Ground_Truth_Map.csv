@@ -1,0 +1,104 @@
+alert_id,event_id,incident_id,attack_type,truth_label,expected_owner,expected_stages
+SIM-ALERT-00001,EVT2B4CD10F,INC103,MALICIOUS_IP_DOMAIN,TRUE_POSITIVE,Application + Endpoint Agent,malicious_indicator_contact
+SIM-ALERT-00002,EVT005382E5,INC065,BRUTE_FORCE,TRUE_POSITIVE,Network Security Agent,credential_attack → account_compromise
+SIM-ALERT-00003,EVT8718F1B9,INC067,BRUTE_FORCE,TRUE_POSITIVE,Network Security Agent,credential_attack → account_compromise
+SIM-ALERT-00004,EVT47805BAC,INC096,SUSPICIOUS_ENDPOINT_EXECUTION,TRUE_POSITIVE,Application + Endpoint Agent,suspicious_process_execution
+SIM-ALERT-00005,EVTDC7C29D0,INC096,SUSPICIOUS_ENDPOINT_EXECUTION,TRUE_POSITIVE,Application + Endpoint Agent,suspicious_process_execution
+SIM-ALERT-00006,EVT73833FC5,INC002,UNMAPPED_SUSPICIOUS_ACTIVITY,TRUE_POSITIVE,Network Security Agent,unclassified_suspicious_activity
+SIM-ALERT-00007,EVTE58A763B,INC104,MALICIOUS_IP_DOMAIN,TRUE_POSITIVE,Application + Endpoint Agent,malicious_indicator_contact
+SIM-ALERT-00008,EVTEE1A5492,INC105,MALICIOUS_IP_DOMAIN,TRUE_POSITIVE,Application + Endpoint Agent,malicious_indicator_contact
+SIM-ALERT-00009,EVT21B67758,INC018,FP_AUTHORIZED_PORT_SCANNER,FALSE_POSITIVE,Network Security Agent,network_discovery
+SIM-ALERT-00010,EVT61F5AF57,INC001,FP_PASSWORD_MISTYPING,FALSE_POSITIVE,Network Security Agent,authentication_anomaly
+SIM-ALERT-00011,EVTA3AB9BA7,INC075,PORT_SCAN,TRUE_POSITIVE,Network Security Agent,reconnaissance → port_discovery
+SIM-ALERT-00012,EVTD8EF89AA,INC082,FIREWALL_POLICY_VIOLATION,TRUE_POSITIVE,Network Security Agent,restricted_service_access_attempt
+SIM-ALERT-00013,EVTE2CE9831,INC020,FP_AUTHORIZED_PORT_SCANNER,FALSE_POSITIVE,Network Security Agent,network_discovery
+SIM-ALERT-00014,EVT308F9A76,INC028,FP_DOCUMENTATION_SEARCH,FALSE_POSITIVE,Application + Endpoint Agent,web_request_review
+SIM-ALERT-00015,EVT124275C3,INC061,BRUTE_FORCE,TRUE_POSITIVE,Network Security Agent,credential_attack → account_compromise
+SIM-ALERT-00016,EVT45054884,INC097,SUSPICIOUS_ENDPOINT_EXECUTION,TRUE_POSITIVE,Application + Endpoint Agent,suspicious_process_execution
+SIM-ALERT-00017,EVT568AC7C3,INC097,SUSPICIOUS_ENDPOINT_EXECUTION,TRUE_POSITIVE,Application + Endpoint Agent,suspicious_process_execution
+SIM-ALERT-00018,EVTD3053B19,INC072,PORT_SCAN,TRUE_POSITIVE,Network Security Agent,reconnaissance → port_discovery
+SIM-ALERT-00019,EVT65552F25,INC099,SUSPICIOUS_ENDPOINT_EXECUTION,TRUE_POSITIVE,Application + Endpoint Agent,suspicious_process_execution
+SIM-ALERT-00020,EVTBFF4632A,INC084,FIREWALL_POLICY_VIOLATION,TRUE_POSITIVE,Network Security Agent,restricted_service_access_attempt
+SIM-ALERT-00021,EVT13247248,INC099,SUSPICIOUS_ENDPOINT_EXECUTION,TRUE_POSITIVE,Application + Endpoint Agent,suspicious_process_execution
+SIM-ALERT-00022,EVTFC6F0842,INC074,PORT_SCAN,TRUE_POSITIVE,Network Security Agent,reconnaissance → port_discovery
+SIM-ALERT-00023,EVT4CA97248,INC076,PORT_SCAN,TRUE_POSITIVE,Network Security Agent,reconnaissance → port_discovery
+SIM-ALERT-00024,EVTFA639E23,INC098,SUSPICIOUS_ENDPOINT_EXECUTION,TRUE_POSITIVE,Application + Endpoint Agent,suspicious_process_execution
+SIM-ALERT-00025,EVT2A95ED75,INC098,SUSPICIOUS_ENDPOINT_EXECUTION,TRUE_POSITIVE,Application + Endpoint Agent,suspicious_process_execution
+SIM-ALERT-00026,EVTA903258E,INC101,MALICIOUS_IP_DOMAIN,TRUE_POSITIVE,Application + Endpoint Agent,malicious_indicator_contact
+SIM-ALERT-00027,EVT8DE5742D,INC090,SQL_INJECTION,TRUE_POSITIVE,Application + Endpoint Agent,web_input_injection
+SIM-ALERT-00028,EVTF799B592,INC060,FP_AUTHORIZED_PENTEST,FALSE_POSITIVE,Network Security Agent,unclassified_suspicious_activity
+SIM-ALERT-00029,EVTCB36C72D,INC060,FP_AUTHORIZED_PENTEST,FALSE_POSITIVE,Network Security Agent,unclassified_suspicious_activity
+SIM-ALERT-00030,EVT587B15E9,INC025,FP_DOCUMENTATION_SEARCH,FALSE_POSITIVE,Application + Endpoint Agent,web_request_review
+SIM-ALERT-00031,EVTA7A134C3,INC040,FP_ADMIN_POWERSHELL,FALSE_POSITIVE,Application + Endpoint Agent,administrative_script_execution
+SIM-ALERT-00032,EVT572B3EB7,INC110,MALWARE_DOWNLOAD_EXECUTION,TRUE_POSITIVE,Application + Endpoint Agent,malware_download → endpoint_execution
+SIM-ALERT-00033,EVT201615DB,INC005,FP_PASSWORD_MISTYPING,FALSE_POSITIVE,Network Security Agent,authentication_anomaly
+SIM-ALERT-00034,EVT370927CB,INC071,PORT_SCAN,TRUE_POSITIVE,Network Security Agent,reconnaissance → port_discovery
+SIM-ALERT-00035,EVT4DD34263,INC102,MALICIOUS_IP_DOMAIN,TRUE_POSITIVE,Application + Endpoint Agent,malicious_indicator_contact
+SIM-ALERT-00036,EVT6128E0DD,INC064,BRUTE_FORCE,TRUE_POSITIVE,Network Security Agent,credential_attack → account_compromise
+SIM-ALERT-00037,EVT9C9906A8,INC008,FP_PASSWORD_MISTYPING,FALSE_POSITIVE,Network Security Agent,authentication_anomaly
+SIM-ALERT-00038,EVT6737853E,INC078,PORT_SCAN,TRUE_POSITIVE,Network Security Agent,reconnaissance → port_discovery
+SIM-ALERT-00039,EVT232B7CCC,INC094,XSS,TRUE_POSITIVE,Application + Endpoint Agent,script_injection_attempt
+SIM-ALERT-00040,EVTABF23F1F,INC015,FP_AUTHORIZED_PORT_SCANNER,FALSE_POSITIVE,Network Security Agent,network_discovery
+SIM-ALERT-00041,EVT67DA333D,INC070,BRUTE_FORCE,TRUE_POSITIVE,Network Security Agent,credential_attack → account_compromise
+SIM-ALERT-00042,EVT41C349A6,INC010,FP_PASSWORD_MISTYPING,FALSE_POSITIVE,Network Security Agent,authentication_anomaly
+SIM-ALERT-00043,EVT6FC8A0B4,INC003,FP_PASSWORD_MISTYPING,FALSE_POSITIVE,Network Security Agent,authentication_anomaly
+SIM-ALERT-00044,EVTE12A3F84,INC080,PORT_SCAN,TRUE_POSITIVE,Network Security Agent,reconnaissance → port_discovery
+SIM-ALERT-00045,EVTAC87DD84,INC059,UNMAPPED_SUSPICIOUS_ACTIVITY,TRUE_POSITIVE,Network Security Agent,unclassified_suspicious_activity
+SIM-ALERT-00046,EVTB1AC18F5,INC032,FP_DOCUMENTATION_SEARCH,FALSE_POSITIVE,Application + Endpoint Agent,web_request_review
+SIM-ALERT-00047,EVT7A26C7D3,INC069,BRUTE_FORCE,TRUE_POSITIVE,Network Security Agent,credential_attack → account_compromise
+SIM-ALERT-00048,EVTC3F5BF96,INC109,MALWARE_DOWNLOAD_EXECUTION,TRUE_POSITIVE,Application + Endpoint Agent,malware_download → endpoint_execution
+SIM-ALERT-00049,EVT1E775D85,INC081,FIREWALL_POLICY_VIOLATION,TRUE_POSITIVE,Network Security Agent,restricted_service_access_attempt
+SIM-ALERT-00050,EVTAE3557A0,INC023,FP_AUTHORIZED_PORT_SCANNER,FALSE_POSITIVE,Network Security Agent,network_discovery
+SIM-ALERT-00051,EVTEC8C198C,INC087,SQL_INJECTION,TRUE_POSITIVE,Application + Endpoint Agent,web_input_injection
+SIM-ALERT-00052,EVT77B1D99F,INC095,XSS,TRUE_POSITIVE,Application + Endpoint Agent,script_injection_attempt
+SIM-ALERT-00053,EVT4CEF3B8F,INC066,BRUTE_FORCE,TRUE_POSITIVE,Network Security Agent,credential_attack → account_compromise
+SIM-ALERT-00054,EVT83BFC9D2,INC093,XSS,TRUE_POSITIVE,Application + Endpoint Agent,script_injection_attempt
+SIM-ALERT-00055,EVTCD3BF924,INC083,FIREWALL_POLICY_VIOLATION,TRUE_POSITIVE,Network Security Agent,restricted_service_access_attempt
+SIM-ALERT-00056,EVT041D1311,INC062,BRUTE_FORCE,TRUE_POSITIVE,Network Security Agent,credential_attack → account_compromise
+SIM-ALERT-00057,EVT97E770B3,INC050,FP_AUTHORIZED_PENTEST,FALSE_POSITIVE,Network Security Agent,unclassified_suspicious_activity
+SIM-ALERT-00058,EVTF1D7A491,INC050,FP_AUTHORIZED_PENTEST,FALSE_POSITIVE,Network Security Agent,unclassified_suspicious_activity
+SIM-ALERT-00059,EVT2A956EA8,INC085,FIREWALL_POLICY_VIOLATION,TRUE_POSITIVE,Network Security Agent,restricted_service_access_attempt
+SIM-ALERT-00060,EVT645E7529,INC107,MALWARE_DOWNLOAD_EXECUTION,TRUE_POSITIVE,Application + Endpoint Agent,malware_download → endpoint_execution
+SIM-ALERT-00061,EVTAAB274D9,INC037,FP_ADMIN_POWERSHELL,FALSE_POSITIVE,Application + Endpoint Agent,administrative_script_execution
+SIM-ALERT-00062,EVTDBC8154F,INC106,MALWARE_DOWNLOAD_EXECUTION,TRUE_POSITIVE,Application + Endpoint Agent,malware_download → endpoint_execution
+SIM-ALERT-00063,EVTFFD5B54E,INC031,UNMAPPED_SUSPICIOUS_ACTIVITY,TRUE_POSITIVE,Network Security Agent,unclassified_suspicious_activity
+SIM-ALERT-00064,EVTB9E76F8A,INC088,SQL_INJECTION,TRUE_POSITIVE,Application + Endpoint Agent,web_input_injection
+SIM-ALERT-00065,EVTC77FF129,INC077,PORT_SCAN,TRUE_POSITIVE,Network Security Agent,reconnaissance → port_discovery
+SIM-ALERT-00066,EVTBC11EB63,INC079,PORT_SCAN,TRUE_POSITIVE,Network Security Agent,reconnaissance → port_discovery
+SIM-ALERT-00067,EVTC35E677D,INC042,FP_ADMIN_POWERSHELL,FALSE_POSITIVE,Application + Endpoint Agent,administrative_script_execution
+SIM-ALERT-00068,EVT386FC2E6,INC063,BRUTE_FORCE,TRUE_POSITIVE,Network Security Agent,credential_attack → account_compromise
+SIM-ALERT-00069,EVTA2E29507,INC013,FP_AUTHORIZED_PORT_SCANNER,FALSE_POSITIVE,Network Security Agent,network_discovery
+SIM-ALERT-00070,EVT62BB639E,INC073,PORT_SCAN,TRUE_POSITIVE,Network Security Agent,reconnaissance → port_discovery
+SIM-ALERT-00071,EVTAC990459,INC057,FP_AUTHORIZED_PENTEST,FALSE_POSITIVE,Network Security Agent,unclassified_suspicious_activity
+SIM-ALERT-00072,EVT55AA7E08,INC057,FP_AUTHORIZED_PENTEST,FALSE_POSITIVE,Network Security Agent,unclassified_suspicious_activity
+SIM-ALERT-00073,EVT67BD0087,INC091,XSS,TRUE_POSITIVE,Application + Endpoint Agent,script_injection_attempt
+SIM-ALERT-00074,EVT4A9E4EC5,INC030,FP_DOCUMENTATION_SEARCH,FALSE_POSITIVE,Application + Endpoint Agent,web_request_review
+SIM-ALERT-00075,EVT8763B2A0,INC047,FP_ADMIN_POWERSHELL,FALSE_POSITIVE,Application + Endpoint Agent,administrative_script_execution
+SIM-ALERT-00076,EVTC0451EB9,INC100,SUSPICIOUS_ENDPOINT_EXECUTION,TRUE_POSITIVE,Application + Endpoint Agent,suspicious_process_execution
+SIM-ALERT-00077,EVT02B56521,INC086,SQL_INJECTION,TRUE_POSITIVE,Application + Endpoint Agent,web_input_injection
+SIM-ALERT-00078,EVTC99FC58E,INC089,SQL_INJECTION,TRUE_POSITIVE,Application + Endpoint Agent,web_input_injection
+SIM-ALERT-00079,EVTAB92A301,INC100,SUSPICIOUS_ENDPOINT_EXECUTION,TRUE_POSITIVE,Application + Endpoint Agent,suspicious_process_execution
+SIM-ALERT-00080,EVT10954846,INC092,XSS,TRUE_POSITIVE,Application + Endpoint Agent,script_injection_attempt
+SIM-ALERT-00081,EVTA8E17112,INC052,FP_AUTHORIZED_PENTEST,FALSE_POSITIVE,Network Security Agent,unclassified_suspicious_activity
+SIM-ALERT-00082,EVT24FD0511,INC052,FP_AUTHORIZED_PENTEST,FALSE_POSITIVE,Network Security Agent,unclassified_suspicious_activity
+SIM-ALERT-00083,EVTFA3E95D4,INC108,MALWARE_DOWNLOAD_EXECUTION,TRUE_POSITIVE,Application + Endpoint Agent,malware_download → endpoint_execution
+SIM-ALERT-00084,EVT529F93A5,INC068,BRUTE_FORCE,TRUE_POSITIVE,Network Security Agent,credential_attack → account_compromise
+SIM-ALERT-00085,EVT2CD9CE14,INC055,FP_AUTHORIZED_PENTEST,FALSE_POSITIVE,Network Security Agent,unclassified_suspicious_activity
+SIM-ALERT-00086,EVTA3603542,INC055,FP_AUTHORIZED_PENTEST,FALSE_POSITIVE,Network Security Agent,unclassified_suspicious_activity
+SIM-ALERT-00087,EVT0C262E39,INC035,FP_DOCUMENTATION_SEARCH,FALSE_POSITIVE,Application + Endpoint Agent,web_request_review
+SIM-ALERT-00088,EVTD8C7959A,INC045,FP_ADMIN_POWERSHELL,FALSE_POSITIVE,Application + Endpoint Agent,administrative_script_execution
+SIM-ALERT-00089,EVTD1872F25,INC111,MULTI_STAGE_ATTACK,TRUE_POSITIVE,Application + Endpoint Agent,credential_attack → suspicious_download → endpoint_execution
+SIM-ALERT-00090,EVTE3769E3D,INC111,MULTI_STAGE_ATTACK,TRUE_POSITIVE,Application + Endpoint Agent,credential_attack → suspicious_download → endpoint_execution
+SIM-ALERT-00091,EVTCBA520CF,INC111,MULTI_STAGE_ATTACK,TRUE_POSITIVE,Application + Endpoint Agent,credential_attack → suspicious_download → endpoint_execution
+SIM-ALERT-00092,EVTBD4B5E9C,INC112,MULTI_STAGE_ATTACK,TRUE_POSITIVE,Application + Endpoint Agent,credential_attack → suspicious_download → endpoint_execution
+SIM-ALERT-00093,EVTDB0A1F3A,INC112,MULTI_STAGE_ATTACK,TRUE_POSITIVE,Application + Endpoint Agent,credential_attack → suspicious_download → endpoint_execution
+SIM-ALERT-00094,EVT6BA28BB4,INC112,MULTI_STAGE_ATTACK,TRUE_POSITIVE,Application + Endpoint Agent,credential_attack → suspicious_download → endpoint_execution
+SIM-ALERT-00095,EVTFB6335D2,INC113,MULTI_STAGE_ATTACK,TRUE_POSITIVE,Application + Endpoint Agent,credential_attack → suspicious_download → endpoint_execution
+SIM-ALERT-00096,EVT9D8E7751,INC113,MULTI_STAGE_ATTACK,TRUE_POSITIVE,Application + Endpoint Agent,credential_attack → suspicious_download → endpoint_execution
+SIM-ALERT-00097,EVT58BCC722,INC113,MULTI_STAGE_ATTACK,TRUE_POSITIVE,Application + Endpoint Agent,credential_attack → suspicious_download → endpoint_execution
+SIM-ALERT-00098,EVT27BDCCB1,INC114,MULTI_STAGE_ATTACK,TRUE_POSITIVE,Application + Endpoint Agent,credential_attack → suspicious_download → endpoint_execution
+SIM-ALERT-00099,EVTC92F5854,INC114,MULTI_STAGE_ATTACK,TRUE_POSITIVE,Application + Endpoint Agent,credential_attack → suspicious_download → endpoint_execution
+SIM-ALERT-00100,EVT05D3FCF8,INC114,MULTI_STAGE_ATTACK,TRUE_POSITIVE,Application + Endpoint Agent,credential_attack → suspicious_download → endpoint_execution
+SIM-ALERT-00101,EVT3173D688,INC115,MULTI_STAGE_ATTACK,TRUE_POSITIVE,Application + Endpoint Agent,credential_attack → suspicious_download → endpoint_execution
+SIM-ALERT-00102,EVT26DA0DBA,INC115,MULTI_STAGE_ATTACK,TRUE_POSITIVE,Application + Endpoint Agent,credential_attack → suspicious_download → endpoint_execution
+SIM-ALERT-00103,EVT2FA3BB9A,INC115,MULTI_STAGE_ATTACK,TRUE_POSITIVE,Application + Endpoint Agent,credential_attack → suspicious_download → endpoint_execution

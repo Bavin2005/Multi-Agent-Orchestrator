@@ -1,0 +1,128 @@
+{
+  "_meta": {
+    "description": "Historical attacks and CVEs used as REFERENCE MEMORY: surfaced as hints in Stage 9 and in the PoC report's 'similar historical attacks' section. Summary-level facts only; verify details before citing externally.",
+    "trust": "reference (never treated as a SOC-confirmed case, never decides a verdict)"
+  },
+  "attacks": [
+    {
+      "id": "REF-WANNACRY-2017", "name": "WannaCry ransomware worm", "year": 2017,
+      "attack_types": ["FIREWALL_POLICY_VIOLATION", "PORT_SCAN"],
+      "stages": ["restricted_service_access_attempt"], "ports": [445, 139],
+      "cves": ["CVE-2017-0144"], "mitre": ["T1021.002", "T1210", "T1486"],
+      "summary": "Worm that scanned for exposed SMB (TCP 445) and spread using the EternalBlue exploit; encrypted files and demanded ransom.",
+      "lesson": "Block SMB/NetBIOS at the perimeter; patch MS17-010; segment internal SMB."
+    },
+    {
+      "id": "REF-BLUEKEEP-2019", "name": "BlueKeep RDP vulnerability", "year": 2019,
+      "attack_types": ["FIREWALL_POLICY_VIOLATION", "PORT_SCAN"],
+      "stages": ["restricted_service_access_attempt"], "ports": [3389],
+      "cves": ["CVE-2019-0708"], "mitre": ["T1021.001", "T1190"],
+      "summary": "Wormable pre-authentication RDP flaw; mass internet scanning followed disclosure and a cryptomining exploitation campaign was later reported.",
+      "lesson": "Never expose RDP directly; require VPN/NLA and patch."
+    },
+    {
+      "id": "REF-BLASTER-2003", "name": "MSBlast / Blaster worm", "year": 2003,
+      "attack_types": ["FIREWALL_POLICY_VIOLATION", "PORT_SCAN"],
+      "stages": ["restricted_service_access_attempt"], "ports": [135],
+      "cves": ["CVE-2003-0352"], "mitre": ["T1210"],
+      "summary": "Worm exploiting the Windows DCOM RPC interface on TCP 135.",
+      "lesson": "Filter MS-RPC at network boundaries."
+    },
+    {
+      "id": "REF-MIRAI-2016", "name": "Mirai IoT botnet", "year": 2016,
+      "attack_types": ["BRUTE_FORCE", "FIREWALL_POLICY_VIOLATION", "PORT_SCAN"],
+      "stages": ["credential_attack", "account_compromise"], "ports": [23, 22],
+      "cves": [], "mitre": ["T1110.001", "T1078", "T1498"],
+      "summary": "Botnet that scanned for Telnet/SSH and logged in with a short list of default credentials, then launched large DDoS attacks (e.g. against Dyn).",
+      "lesson": "Remove default credentials; disable Telnet; rate-limit and lock out repeated failures."
+    },
+    {
+      "id": "REF-COLONIAL-2021", "name": "Colonial Pipeline ransomware incident", "year": 2021,
+      "attack_types": ["BRUTE_FORCE", "MULTI_STAGE_ATTACK"],
+      "stages": ["credential_attack", "account_compromise"], "ports": [],
+      "cves": [], "mitre": ["T1078", "T1133", "T1486"],
+      "summary": "Reported intrusion through a compromised VPN account lacking multi-factor authentication, followed by ransomware deployment.",
+      "lesson": "Enforce MFA on remote access; retire unused accounts; alert on login success after failures."
+    },
+    {
+      "id": "REF-HEARTLAND-2008", "name": "Heartland Payment Systems breach", "year": 2008,
+      "attack_types": ["SQL_INJECTION"],
+      "stages": ["web_input_injection"], "ports": [80, 443],
+      "cves": [], "mitre": ["T1190", "T1005"],
+      "summary": "SQL injection against a web application was the reported initial foothold, later used to install sniffing malware on the payment network.",
+      "lesson": "Parameterised queries, WAF rules for injection tautologies, and least-privilege database accounts."
+    },
+    {
+      "id": "REF-TALKTALK-2015", "name": "TalkTalk customer-data breach", "year": 2015,
+      "attack_types": ["SQL_INJECTION"],
+      "stages": ["web_input_injection"], "ports": [80, 443],
+      "cves": [], "mitre": ["T1190"],
+      "summary": "SQL injection against legacy web pages exposed customer records.",
+      "lesson": "Retire or patch legacy web assets; monitor for 500-error bursts on login endpoints."
+    },
+    {
+      "id": "REF-MOVEIT-2023", "name": "MOVEit Transfer SQL injection campaign", "year": 2023,
+      "attack_types": ["SQL_INJECTION", "MULTI_STAGE_ATTACK"],
+      "stages": ["web_input_injection"], "ports": [443],
+      "cves": ["CVE-2023-34362"], "mitre": ["T1190", "T1505.003", "T1567"],
+      "summary": "Zero-day SQL injection in a file-transfer web app exploited at scale for data theft.",
+      "lesson": "Patch internet-facing file-transfer products immediately; hunt for web shells after injection indicators."
+    },
+    {
+      "id": "REF-EQUIFAX-2017", "name": "Equifax breach (Apache Struts)", "year": 2017,
+      "attack_types": ["SQL_INJECTION"],
+      "stages": ["web_input_injection"], "ports": [80, 443],
+      "cves": ["CVE-2017-5638"], "mitre": ["T1190"],
+      "summary": "Remote code execution through a crafted request to a vulnerable Apache Struts application (injection-class web exploit).",
+      "lesson": "Patch known-exploited web frameworks quickly; maintain an accurate asset inventory."
+    },
+    {
+      "id": "REF-SAMY-2005", "name": "Samy worm (MySpace)", "year": 2005,
+      "attack_types": ["XSS"],
+      "stages": ["script_injection_attempt"], "ports": [80],
+      "cves": [], "mitre": ["T1059.007"],
+      "summary": "Stored cross-site scripting worm that propagated through user profiles.",
+      "lesson": "Context-aware output encoding and a strict Content-Security-Policy."
+    },
+    {
+      "id": "REF-TWEETDECK-2014", "name": "TweetDeck XSS worm", "year": 2014,
+      "attack_types": ["XSS"],
+      "stages": ["script_injection_attempt"], "ports": [443],
+      "cves": [], "mitre": ["T1059.007"],
+      "summary": "A crafted tweet executed script in viewers' TweetDeck sessions and self-propagated.",
+      "lesson": "Sanitise rendered user content; deploy CSP."
+    },
+    {
+      "id": "REF-EMOTET-2014", "name": "Emotet loader campaigns", "year": 2014,
+      "attack_types": ["SUSPICIOUS_ENDPOINT_EXECUTION", "MALWARE_DOWNLOAD_EXECUTION", "MULTI_STAGE_ATTACK"],
+      "stages": ["suspicious_process_execution", "malware_download", "endpoint_execution"], "ports": [80, 443],
+      "cves": [], "mitre": ["T1059.001", "T1027", "T1204.002", "T1105"],
+      "summary": "Long-running malware-as-a-service; documents/macros launched encoded PowerShell that downloaded further payloads.",
+      "lesson": "Alert on PowerShell -EncodedCommand and script hosts spawned from user processes; block macro execution from the internet."
+    },
+    {
+      "id": "REF-QAKBOT-2008", "name": "QakBot loader chains", "year": 2008,
+      "attack_types": ["SUSPICIOUS_ENDPOINT_EXECUTION", "MALWARE_DOWNLOAD_EXECUTION"],
+      "stages": ["suspicious_process_execution", "malware_download", "endpoint_execution"], "ports": [443],
+      "cves": [], "mitre": ["T1059.005", "T1105", "T1204.002"],
+      "summary": "Banking trojan turned loader; delivery commonly used script hosts (VBScript/JScript) to fetch and run payloads.",
+      "lesson": "Restrict wscript/cscript; alert on script hosts launching downloads."
+    },
+    {
+      "id": "REF-SOLARWINDS-2020", "name": "SolarWinds SUNBURST", "year": 2020,
+      "attack_types": ["MALICIOUS_IP_DOMAIN"],
+      "stages": ["malicious_indicator_contact"], "ports": [443],
+      "cves": [], "mitre": ["T1195.002", "T1071.001", "T1568"],
+      "summary": "Trojanised software update beaconed to attacker-controlled domains over HTTPS to receive tasking.",
+      "lesson": "Egress filtering and DNS/URL reputation blocking limit the value of a backdoor."
+    },
+    {
+      "id": "REF-LOG4SHELL-2021", "name": "Log4Shell", "year": 2021,
+      "attack_types": ["MALICIOUS_IP_DOMAIN", "MULTI_STAGE_ATTACK"],
+      "stages": ["malicious_indicator_contact"], "ports": [80, 443],
+      "cves": ["CVE-2021-44228"], "mitre": ["T1190", "T1105"],
+      "summary": "Remote code execution via JNDI lookups in Log4j; vulnerable servers called out to attacker infrastructure to fetch payloads.",
+      "lesson": "Unexpected outbound requests from servers to unknown domains are a strong exploitation signal."
+    }
+  ]
+}

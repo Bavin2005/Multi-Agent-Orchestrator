@@ -1,0 +1,116 @@
+incident_id,attack_type,severity,expected_agents,expected_final_risk,expected_owner,expected_stages,truth_label
+INC001,FP_PASSWORD_MISTYPING,MEDIUM,Network Security Agent,LOW,Network Security Agent,authentication_anomaly,FALSE_POSITIVE
+INC002,UNMAPPED_SUSPICIOUS_ACTIVITY,MEDIUM,Network Security Agent,MEDIUM,Network Security Agent,unclassified_suspicious_activity,TRUE_POSITIVE
+INC003,FP_PASSWORD_MISTYPING,MEDIUM,Network Security Agent,LOW,Network Security Agent,authentication_anomaly,FALSE_POSITIVE
+INC004,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC005,FP_PASSWORD_MISTYPING,MEDIUM,Network Security Agent,LOW,Network Security Agent,authentication_anomaly,FALSE_POSITIVE
+INC006,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC007,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC008,FP_PASSWORD_MISTYPING,MEDIUM,Network Security Agent,LOW,Network Security Agent,authentication_anomaly,FALSE_POSITIVE
+INC009,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC010,FP_PASSWORD_MISTYPING,MEDIUM,Network Security Agent,LOW,Network Security Agent,authentication_anomaly,FALSE_POSITIVE
+INC011,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC012,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC013,FP_AUTHORIZED_PORT_SCANNER,MEDIUM,Network Security Agent,LOW,Network Security Agent,network_discovery,FALSE_POSITIVE
+INC014,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC015,FP_AUTHORIZED_PORT_SCANNER,MEDIUM,Network Security Agent,LOW,Network Security Agent,network_discovery,FALSE_POSITIVE
+INC016,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC017,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC018,FP_AUTHORIZED_PORT_SCANNER,MEDIUM,Network Security Agent,LOW,Network Security Agent,network_discovery,FALSE_POSITIVE
+INC019,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC020,FP_AUTHORIZED_PORT_SCANNER,MEDIUM,Network Security Agent,LOW,Network Security Agent,network_discovery,FALSE_POSITIVE
+INC021,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC022,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC023,FP_AUTHORIZED_PORT_SCANNER,MEDIUM,Network Security Agent,LOW,Network Security Agent,network_discovery,FALSE_POSITIVE
+INC024,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC025,FP_DOCUMENTATION_SEARCH,MEDIUM,Application + Endpoint Agent,LOW,Application + Endpoint Agent,web_request_review,FALSE_POSITIVE
+INC026,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC027,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC028,FP_DOCUMENTATION_SEARCH,MEDIUM,Application + Endpoint Agent,LOW,Application + Endpoint Agent,web_request_review,FALSE_POSITIVE
+INC029,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC030,FP_DOCUMENTATION_SEARCH,MEDIUM,Application + Endpoint Agent,LOW,Application + Endpoint Agent,web_request_review,FALSE_POSITIVE
+INC031,UNMAPPED_SUSPICIOUS_ACTIVITY,MEDIUM,Network Security Agent,MEDIUM,Network Security Agent,unclassified_suspicious_activity,TRUE_POSITIVE
+INC032,FP_DOCUMENTATION_SEARCH,MEDIUM,Application + Endpoint Agent,LOW,Application + Endpoint Agent,web_request_review,FALSE_POSITIVE
+INC033,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC034,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC035,FP_DOCUMENTATION_SEARCH,MEDIUM,Application + Endpoint Agent,LOW,Application + Endpoint Agent,web_request_review,FALSE_POSITIVE
+INC036,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC037,FP_ADMIN_POWERSHELL,MEDIUM,Application + Endpoint Agent,LOW,Application + Endpoint Agent,administrative_script_execution,FALSE_POSITIVE
+INC038,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC039,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC040,FP_ADMIN_POWERSHELL,MEDIUM,Application + Endpoint Agent,LOW,Application + Endpoint Agent,administrative_script_execution,FALSE_POSITIVE
+INC041,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC042,FP_ADMIN_POWERSHELL,MEDIUM,Application + Endpoint Agent,LOW,Application + Endpoint Agent,administrative_script_execution,FALSE_POSITIVE
+INC043,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC044,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC045,FP_ADMIN_POWERSHELL,MEDIUM,Application + Endpoint Agent,LOW,Application + Endpoint Agent,administrative_script_execution,FALSE_POSITIVE
+INC046,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC047,FP_ADMIN_POWERSHELL,MEDIUM,Application + Endpoint Agent,LOW,Application + Endpoint Agent,administrative_script_execution,FALSE_POSITIVE
+INC048,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC049,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC050,FP_AUTHORIZED_PENTEST,HIGH,Network Security Agent,LOW,Network Security Agent,unclassified_suspicious_activity,FALSE_POSITIVE
+INC051,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC052,FP_AUTHORIZED_PENTEST,HIGH,Network Security Agent,LOW,Network Security Agent,unclassified_suspicious_activity,FALSE_POSITIVE
+INC053,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC054,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC055,FP_AUTHORIZED_PENTEST,HIGH,Network Security Agent,LOW,Network Security Agent,unclassified_suspicious_activity,FALSE_POSITIVE
+INC056,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC057,FP_AUTHORIZED_PENTEST,HIGH,Network Security Agent,LOW,Network Security Agent,unclassified_suspicious_activity,FALSE_POSITIVE
+INC058,NORMAL,LOW,NONE,LOW,NONE,normal_activity,NO_ALERT
+INC059,UNMAPPED_SUSPICIOUS_ACTIVITY,MEDIUM,Network Security Agent,MEDIUM,Network Security Agent,unclassified_suspicious_activity,TRUE_POSITIVE
+INC060,FP_AUTHORIZED_PENTEST,HIGH,Network Security Agent,LOW,Network Security Agent,unclassified_suspicious_activity,FALSE_POSITIVE
+INC061,BRUTE_FORCE,HIGH,Network Security Agent,HIGH,Network Security Agent,credential_attack → account_compromise,TRUE_POSITIVE
+INC062,BRUTE_FORCE,HIGH,Network Security Agent,HIGH,Network Security Agent,credential_attack → account_compromise,TRUE_POSITIVE
+INC063,BRUTE_FORCE,HIGH,Network Security Agent,HIGH,Network Security Agent,credential_attack → account_compromise,TRUE_POSITIVE
+INC064,BRUTE_FORCE,HIGH,Network Security Agent,HIGH,Network Security Agent,credential_attack → account_compromise,TRUE_POSITIVE
+INC065,BRUTE_FORCE,HIGH,Network Security Agent,HIGH,Network Security Agent,credential_attack → account_compromise,TRUE_POSITIVE
+INC066,BRUTE_FORCE,HIGH,Network Security Agent,HIGH,Network Security Agent,credential_attack → account_compromise,TRUE_POSITIVE
+INC067,BRUTE_FORCE,HIGH,Network Security Agent,HIGH,Network Security Agent,credential_attack → account_compromise,TRUE_POSITIVE
+INC068,BRUTE_FORCE,HIGH,Network Security Agent,HIGH,Network Security Agent,credential_attack → account_compromise,TRUE_POSITIVE
+INC069,BRUTE_FORCE,HIGH,Network Security Agent,HIGH,Network Security Agent,credential_attack → account_compromise,TRUE_POSITIVE
+INC070,BRUTE_FORCE,HIGH,Network Security Agent,HIGH,Network Security Agent,credential_attack → account_compromise,TRUE_POSITIVE
+INC071,PORT_SCAN,MEDIUM,Network Security Agent,MEDIUM,Network Security Agent,reconnaissance → port_discovery,TRUE_POSITIVE
+INC072,PORT_SCAN,MEDIUM,Network Security Agent,MEDIUM,Network Security Agent,reconnaissance → port_discovery,TRUE_POSITIVE
+INC073,PORT_SCAN,MEDIUM,Network Security Agent,MEDIUM,Network Security Agent,reconnaissance → port_discovery,TRUE_POSITIVE
+INC074,PORT_SCAN,MEDIUM,Network Security Agent,MEDIUM,Network Security Agent,reconnaissance → port_discovery,TRUE_POSITIVE
+INC075,PORT_SCAN,MEDIUM,Network Security Agent,MEDIUM,Network Security Agent,reconnaissance → port_discovery,TRUE_POSITIVE
+INC076,PORT_SCAN,MEDIUM,Network Security Agent,MEDIUM,Network Security Agent,reconnaissance → port_discovery,TRUE_POSITIVE
+INC077,PORT_SCAN,MEDIUM,Network Security Agent,MEDIUM,Network Security Agent,reconnaissance → port_discovery,TRUE_POSITIVE
+INC078,PORT_SCAN,MEDIUM,Network Security Agent,MEDIUM,Network Security Agent,reconnaissance → port_discovery,TRUE_POSITIVE
+INC079,PORT_SCAN,MEDIUM,Network Security Agent,MEDIUM,Network Security Agent,reconnaissance → port_discovery,TRUE_POSITIVE
+INC080,PORT_SCAN,MEDIUM,Network Security Agent,MEDIUM,Network Security Agent,reconnaissance → port_discovery,TRUE_POSITIVE
+INC081,FIREWALL_POLICY_VIOLATION,HIGH,Network Security Agent,HIGH,Network Security Agent,restricted_service_access_attempt,TRUE_POSITIVE
+INC082,FIREWALL_POLICY_VIOLATION,HIGH,Network Security Agent,HIGH,Network Security Agent,restricted_service_access_attempt,TRUE_POSITIVE
+INC083,FIREWALL_POLICY_VIOLATION,HIGH,Network Security Agent,HIGH,Network Security Agent,restricted_service_access_attempt,TRUE_POSITIVE
+INC084,FIREWALL_POLICY_VIOLATION,HIGH,Network Security Agent,HIGH,Network Security Agent,restricted_service_access_attempt,TRUE_POSITIVE
+INC085,FIREWALL_POLICY_VIOLATION,HIGH,Network Security Agent,HIGH,Network Security Agent,restricted_service_access_attempt,TRUE_POSITIVE
+INC086,SQL_INJECTION,HIGH,Application + Endpoint Agent,HIGH,Application + Endpoint Agent,web_input_injection,TRUE_POSITIVE
+INC087,SQL_INJECTION,HIGH,Application + Endpoint Agent,HIGH,Application + Endpoint Agent,web_input_injection,TRUE_POSITIVE
+INC088,SQL_INJECTION,HIGH,Application + Endpoint Agent,HIGH,Application + Endpoint Agent,web_input_injection,TRUE_POSITIVE
+INC089,SQL_INJECTION,HIGH,Application + Endpoint Agent,HIGH,Application + Endpoint Agent,web_input_injection,TRUE_POSITIVE
+INC090,SQL_INJECTION,HIGH,Application + Endpoint Agent,HIGH,Application + Endpoint Agent,web_input_injection,TRUE_POSITIVE
+INC091,XSS,HIGH,Application + Endpoint Agent,HIGH,Application + Endpoint Agent,script_injection_attempt,TRUE_POSITIVE
+INC092,XSS,HIGH,Application + Endpoint Agent,HIGH,Application + Endpoint Agent,script_injection_attempt,TRUE_POSITIVE
+INC093,XSS,HIGH,Application + Endpoint Agent,HIGH,Application + Endpoint Agent,script_injection_attempt,TRUE_POSITIVE
+INC094,XSS,HIGH,Application + Endpoint Agent,HIGH,Application + Endpoint Agent,script_injection_attempt,TRUE_POSITIVE
+INC095,XSS,HIGH,Application + Endpoint Agent,HIGH,Application + Endpoint Agent,script_injection_attempt,TRUE_POSITIVE
+INC096,SUSPICIOUS_ENDPOINT_EXECUTION,HIGH,Application + Endpoint Agent,HIGH,Application + Endpoint Agent,suspicious_process_execution,TRUE_POSITIVE
+INC097,SUSPICIOUS_ENDPOINT_EXECUTION,HIGH,Application + Endpoint Agent,HIGH,Application + Endpoint Agent,suspicious_process_execution,TRUE_POSITIVE
+INC098,SUSPICIOUS_ENDPOINT_EXECUTION,HIGH,Application + Endpoint Agent,HIGH,Application + Endpoint Agent,suspicious_process_execution,TRUE_POSITIVE
+INC099,SUSPICIOUS_ENDPOINT_EXECUTION,HIGH,Application + Endpoint Agent,HIGH,Application + Endpoint Agent,suspicious_process_execution,TRUE_POSITIVE
+INC100,SUSPICIOUS_ENDPOINT_EXECUTION,HIGH,Application + Endpoint Agent,HIGH,Application + Endpoint Agent,suspicious_process_execution,TRUE_POSITIVE
+INC101,MALICIOUS_IP_DOMAIN,HIGH,Application + Endpoint Agent,HIGH,Application + Endpoint Agent,malicious_indicator_contact,TRUE_POSITIVE
+INC102,MALICIOUS_IP_DOMAIN,HIGH,Application + Endpoint Agent,HIGH,Application + Endpoint Agent,malicious_indicator_contact,TRUE_POSITIVE
+INC103,MALICIOUS_IP_DOMAIN,HIGH,Application + Endpoint Agent,HIGH,Application + Endpoint Agent,malicious_indicator_contact,TRUE_POSITIVE
+INC104,MALICIOUS_IP_DOMAIN,HIGH,Application + Endpoint Agent,HIGH,Application + Endpoint Agent,malicious_indicator_contact,TRUE_POSITIVE
+INC105,MALICIOUS_IP_DOMAIN,HIGH,Application + Endpoint Agent,HIGH,Application + Endpoint Agent,malicious_indicator_contact,TRUE_POSITIVE
+INC106,MALWARE_DOWNLOAD_EXECUTION,CRITICAL,Application + Endpoint Agent,CRITICAL,Application + Endpoint Agent,malware_download → endpoint_execution,TRUE_POSITIVE
+INC107,MALWARE_DOWNLOAD_EXECUTION,CRITICAL,Application + Endpoint Agent,CRITICAL,Application + Endpoint Agent,malware_download → endpoint_execution,TRUE_POSITIVE
+INC108,MALWARE_DOWNLOAD_EXECUTION,CRITICAL,Application + Endpoint Agent,CRITICAL,Application + Endpoint Agent,malware_download → endpoint_execution,TRUE_POSITIVE
+INC109,MALWARE_DOWNLOAD_EXECUTION,CRITICAL,Application + Endpoint Agent,CRITICAL,Application + Endpoint Agent,malware_download → endpoint_execution,TRUE_POSITIVE
+INC110,MALWARE_DOWNLOAD_EXECUTION,CRITICAL,Application + Endpoint Agent,CRITICAL,Application + Endpoint Agent,malware_download → endpoint_execution,TRUE_POSITIVE
+INC111,MULTI_STAGE_ATTACK,CRITICAL,Network Security Agent; Application + Endpoint Agent; Threat Intelligence Agent,CRITICAL,Application + Endpoint Agent,credential_attack → suspicious_download → endpoint_execution,TRUE_POSITIVE
+INC112,MULTI_STAGE_ATTACK,CRITICAL,Network Security Agent; Application + Endpoint Agent; Threat Intelligence Agent,CRITICAL,Application + Endpoint Agent,credential_attack → suspicious_download → endpoint_execution,TRUE_POSITIVE
+INC113,MULTI_STAGE_ATTACK,CRITICAL,Network Security Agent; Application + Endpoint Agent; Threat Intelligence Agent,CRITICAL,Application + Endpoint Agent,credential_attack → suspicious_download → endpoint_execution,TRUE_POSITIVE
+INC114,MULTI_STAGE_ATTACK,CRITICAL,Network Security Agent; Application + Endpoint Agent; Threat Intelligence Agent,CRITICAL,Application + Endpoint Agent,credential_attack → suspicious_download → endpoint_execution,TRUE_POSITIVE
+INC115,MULTI_STAGE_ATTACK,CRITICAL,Network Security Agent; Application + Endpoint Agent; Threat Intelligence Agent,CRITICAL,Application + Endpoint Agent,credential_attack → suspicious_download → endpoint_execution,TRUE_POSITIVE

@@ -1,0 +1,31 @@
+# Stage 6 minimum-evidence rules. Picked by the incident's siem_groups. No LLM involved.
+# Checks run over the incident's ALERT events (count / distinct / sequence / match).
+evidence_rules:
+  brute_force:
+    when_groups: [brute_force, authentication_failures]
+    ready_if_any:
+      # The dataset's SIEM rule fires on 4 failures; the doc's "5" never matches real brute force.
+      - count: {action: LOGIN_FAILED, same: [src_ip, user], min: 3}
+      - sequence: [LOGIN_FAILED, LOGIN_SUCCESS]
+  port_scan:
+    when_groups: [port_scan, scan, recon]
+    ready_if_any:
+      - distinct: {field: dst_port, same: [src_ip], min: 10}
+  sql_injection:
+    when_groups: [possible_sql_injection, sqli]
+    ready_if_any:
+      # case-insensitive; includes comment terminators and tautologies (admin'-- , OR 1=1)
+      - match: {field: ext.request_body, regex: "(?i)union\\s+select|'\\s*or\\s*'?\\d|\\bor\\s+1\\s*=\\s*1|'\\s*--|sleep\\s*\\("}
+      - match: {field: ext.url, regex: "(?i)union\\s+select|'\\s*or\\s*'?\\d|\\bor\\s+1\\s*=\\s*1|'\\s*--|sleep\\s*\\("}
+  xss:
+    when_groups: [possible_xss, xss]
+    ready_if_any:
+      - match: {field: ext.url, regex: "(?i)<\\s*script|onerror\\s*=|onload\\s*=|javascript:"}
+  policy_violation:
+    when_groups: [policy_violation, firewall]
+    ready_if_any:
+      - count: {action: BLOCK, same: [src_ip], min: 3}
+  malware:
+    when_groups: [malware, indicator, execution]
+    ready_if_any:
+      - sequence: [HTTP_REQUEST, PROCESS_EXECUTION]

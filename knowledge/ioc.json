@@ -1,0 +1,70 @@
+{
+  "_meta": {
+    "description": "Local threat-intelligence knowledge base (simulated feeds + public-knowledge heuristics). Hand-maintained.",
+    "note": "Domain verdicts reflect the simulated IOC list the SIEM rule WEB-IOC-01 is configured with. Port/CVE associations are historical context, NOT a claim that the CVE was exploited in any given incident."
+  },
+  "domains": {
+    "suspicious-c2.org": {
+      "verdict": "known_malicious", "category": "command-and-control",
+      "sources": ["simulated-ioc-list", "soc-watchlist"], "mitre": ["T1071.001"],
+      "notes": "Beacon-style /update endpoint returning opaque binary content."
+    },
+    "malware-download.net": {
+      "verdict": "known_malicious", "category": "malware-hosting",
+      "sources": ["simulated-ioc-list", "soc-watchlist"], "mitre": ["T1105"],
+      "notes": "Serves executable payloads (payload.exe) and /update stubs."
+    },
+    "evil-update.com": {
+      "verdict": "known_malicious", "category": "malware-staging (fake updater)",
+      "sources": ["simulated-ioc-list"], "mitre": ["T1105", "T1189"],
+      "notes": "Fake software-update lure domain."
+    }
+  },
+  "ip_feeds": [
+    {
+      "name": "simulated-abuse-feed",
+      "description": "Documentation-range placeholders so the lookup path is exercised; no entry matches dataset traffic.",
+      "entries": {
+        "198.51.100.23": {"verdict": "known_malicious", "category": "ssh-brute-force source"},
+        "203.0.113.7": {"verdict": "suspicious", "category": "scanner"}
+      }
+    }
+  ],
+  "file_hashes": {},
+  "suspicious_artifacts": {
+    "command_patterns": [
+      {"id": "ps-encoded", "regex": "(?i)powershell(\\.exe)?\\b.*\\s-(e|enc|encodedcommand)\\b", "mitre": ["T1059.001", "T1027"], "desc": "PowerShell encoded command (obfuscation)"},
+      {"id": "cmd-batch", "regex": "(?i)\\bcmd(\\.exe)?\\s+/c\\b.*\\.(bat|cmd)\\b", "mitre": ["T1059.003"], "desc": "cmd.exe running a batch script"},
+      {"id": "wscript-vbs", "regex": "(?i)\\b(wscript|cscript)(\\.exe)?\\b.*\\.(vbs|vbe|js)\\b", "mitre": ["T1059.005"], "desc": "Script host running a VBScript/JScript file"},
+      {"id": "lolbin-download", "regex": "(?i)\\b(certutil|bitsadmin|mshta|regsvr32|rundll32)\\b.*(http|urlcache|scrobj)", "mitre": ["T1105", "T1218"], "desc": "Living-off-the-land download/proxy-execution"},
+      {"id": "payload-exec", "regex": "(?i)\\bpayload\\.exe\\b", "mitre": ["T1204.002"], "desc": "Execution of a file named payload.exe"},
+      {"id": "silent-update", "regex": "(?i)\\bupdate\\.exe\\b.*--silent", "mitre": ["T1204.002"], "desc": "Silent execution of a fake updater"}
+    ],
+    "benign_command_patterns": [
+      {"id": "ps-readonly-inventory", "regex": "(?i)^powershell(\\.exe)?\\s+(-NoProfile\\s+)?-Command\\s+Get-(Process|Service|HotFix|ComputerInfo|EventLog)\\s*$", "desc": "Read-only system inventory cmdlet, no obfuscation"}
+    ],
+    "path_patterns": [
+      {"regex": "(?i)^c:\\\\temp\\\\", "desc": "executable staged in C:\\Temp", "mitre": ["T1074.001"]},
+      {"regex": "(?i)^c:\\\\users\\\\public\\\\downloads\\\\", "desc": "executable dropped in a world-writable Public\\Downloads folder", "mitre": ["T1204.002"]}
+    ],
+    "url_patterns": [
+      {"regex": "(?i)\\.(exe|dll|scr|bat|vbs|ps1|msi)(\\?|$)", "desc": "direct download of an executable file", "mitre": ["T1105"]}
+    ]
+  },
+  "ports": {
+    "21":   {"service": "FTP", "note": "legacy cleartext file transfer; frequent scan target"},
+    "22":   {"service": "SSH", "note": "remote administration; primary brute-force target", "refs": ["REF-MIRAI-2016"]},
+    "23":   {"service": "Telnet", "note": "should not be exposed; default-credential target of IoT botnets", "refs": ["REF-MIRAI-2016"]},
+    "25":   {"service": "SMTP"},
+    "53":   {"service": "DNS"},
+    "80":   {"service": "HTTP"},
+    "110":  {"service": "POP3"},
+    "135":  {"service": "MS-RPC endpoint mapper", "cves": ["CVE-2003-0352"], "refs": ["REF-BLASTER-2003"], "note": "historically exploited by the Blaster worm"},
+    "139":  {"service": "NetBIOS session (SMB over NetBIOS)", "refs": ["REF-WANNACRY-2017"], "note": "legacy Windows file sharing; should never be internet-reachable"},
+    "143":  {"service": "IMAP"},
+    "443":  {"service": "HTTPS"},
+    "445":  {"service": "SMB", "cves": ["CVE-2017-0144"], "refs": ["REF-WANNACRY-2017"], "note": "EternalBlue / WannaCry spread over this port"},
+    "3389": {"service": "RDP", "cves": ["CVE-2019-0708"], "refs": ["REF-BLUEKEEP-2019"], "note": "BlueKeep; RDP is a common ransomware entry point"},
+    "8448": {"service": "uncommon", "note": "no standard service on most networks (used by Matrix federation); treat high-volume UDP here as unexplained until an owner is identified"}
+  }
+}
